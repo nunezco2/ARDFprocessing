@@ -8,4 +8,4 @@
 
 from collections import namedtuple
 
-Pixel = namedtuple('Pixel', ['x', 'y'])
+Pixel = namedtuple('Pixel', ['x', 'y', 'channel'])

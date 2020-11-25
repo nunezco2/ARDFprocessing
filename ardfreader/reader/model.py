@@ -9,19 +9,15 @@
 from abc import ABC, abstractmethod
 
 
-class Producer(ABC):
-    
-    @abstractmethod
-    def __init__(self, inputfile):
-        """
-        Initialize the reader
-        """
-        self.__inputfile = inputfile
+class Model(ABC):
 
     @abstractmethod
-    def parse():
-        pass
+    def __init__(self, name, params):
+        self.__name = name
 
     @abstractmethod
-    def next():
+    def fit(self):
         pass
+
+    def name(self):
+        return self.__name
