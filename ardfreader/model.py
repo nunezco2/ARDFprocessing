@@ -16,6 +16,7 @@ class Model(ABC):
     def __init__(self, name, params):
         self.__name = name
         self.__params = params
+        print(f'The model {name} is being used with parameters {params}')
 
     @abstractmethod
     def fit(self, pix: Pixel) -> Curve:

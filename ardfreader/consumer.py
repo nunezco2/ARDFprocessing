@@ -6,25 +6,30 @@
 #
 # @author: Santiago Nunez-Corrales <nunezco2@illinois.edu>
 
-from abc import ABC, abstractmethod
-from ardfreader.JKRmodel import JKRModel
+from multiprocessing import JoinableQueue, cpu_count
 
-class Consumer(ABC):
+# Add new models here
+from ardfreader.fitter import Fitter
 
-    algorithms = {
-        "JKR" : JKRModel
-    }
+class Consumer:
 
-    def __init__(self, model, pars):
-        a = self.algorithms[model]
-        
-        if a is not None:
-            self.model = a
-        else:
-            raise RuntimeError('Algorithm has not been implemented')
+    def __init__(self, db):
+        self.tasks = JoinableQueue()
+        self.num_fitters = cpu_count()
+        self.fitters = [ Fitter(self.tasks, db) for i in range(self.num_fitters) ]
+        print(f'Initializing {self.num_fitters} fitting processes')
 
+    def start(self):
+        for f in self.fitters:
+            f.start()
 
+    def put(self, task):
+        self.tasks.put(task)
 
-        self.current = 0
+    def stop(self):
+        for f in self.fitters:
+            self.tasks.put(None)
 
+        self.tasks.join()
 
+        print(f'All {self.num_fitters} curve fitting processes ended\n')

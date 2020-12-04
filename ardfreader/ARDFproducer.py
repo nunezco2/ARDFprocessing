@@ -18,13 +18,16 @@ class ARDFProducer(Producer):
 
         print('ARDF file ready for data consumption')
 
-
-    def next(self):
-        # Logic: find next pixel line, package it and send it as a pixel
+    def __next__(self):
+        # Logic: find next pixel line, package it and send it as a pixel. Uses iterators
         # For testing purposes
         line = 0
         pixel = 0
 
-        print(f'Reading line: {line}\tPixel: {pixel}...')
+        # TODO: parse file here
 
-        return Pixel(x=0, y=0, channel=[])
+        #print(f'Line: {line}\tPixel: {pixel}...')
+
+        # TODO: Create the EOF condition here
+
+        raise StopIteration

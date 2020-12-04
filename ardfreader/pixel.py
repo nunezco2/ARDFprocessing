@@ -13,3 +13,6 @@ class Pixel:
     x: int = 0
     y: int = 0
     channel: list = field(default_factory=list)
+
+    def is_eof(self):
+        not self.list

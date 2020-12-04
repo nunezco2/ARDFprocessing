@@ -7,10 +7,19 @@
 # @author: Santiago Nunez-Corrales <nunezco2@illinois.edu>
 
 from ardfreader.curve import Curve
-from ardfreader.model import Model
 
 
-class JKRModel(Model):
+class ARDFDatabase:
 
-    def fit(self, pix: Curve):
+    def __init__(self, file):
+        self.file = file
+        self.cursor = None
+
+    def connect(self):
+        pass
+
+    def put(self, curve: Curve):
+        pass
+
+    def close(self):
         pass

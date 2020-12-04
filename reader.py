@@ -11,7 +11,12 @@ import logging
 import argparse
 import multiprocessing as mp
 
+from ardfreader.JKRmodel import JKRModel
 from ardfreader.ARDFproducer import ARDFProducer
+from ardfreader.database import ARDFDatabase
+from ardfreader.consumer import Consumer
+from ardfreader.fittask import FittingTask
+
 
 def init_parser():
     """
@@ -63,11 +68,44 @@ def start(args):
             check_algo(args.algorithm)):
         sys.exit('Exiting after error')
 
+    # Choose the algorithm
+    algorithms = {
+        "JKR" : JKRModel
+    }
+
+    # Read the parameters 
+    # TODO: not implemented yet, send an empty list first, ideally a JSON later
+    params = []
+
+    algo = algorithms[args.algorithm]
+        
+    if algo is None:
+        raise RuntimeError('Algorithm has not been implemented')
+    else:
+        model = algo(args.algorithm, params)
+
     # Parse the first part of the file to make sure it is an ARDF
     producer = ARDFProducer(args.inputfile)
     producer.parse()
 
+    # Initialize the database to save the data
+    db = ARDFDatabase(args.outputdb)
 
+    # Create and start the consumer using the information about the algorithm, the parameters and the database
+    consumer = Consumer(db)
+    consumer.start()
+
+    # While no EOF is read, put it and process it in the queue
+    for p in producer:
+        consumer.put(FittingTask(p, model))
+
+    # Stop the consumer after
+    consumer.stop()
+
+    # Close the database
+    db.close()
+
+    print(f'ARDF file processed successfully. Results have been stored at { args.outputdb}')
 
 if __name__ == '__main__':
     logging.basicConfig()
