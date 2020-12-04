@@ -9,7 +9,9 @@
 from dataclasses import dataclass, field
 
 @dataclass
-class Pixel:
-    x: int = 0
-    y: int = 0
-    channel: list = field(default_factory=list)
+class Curve:
+    young: float = 0
+    young_c: float = 0
+    gd_fit: float = 0
+    parameters: list = field(default_factory=list)
+    data: list = field(default_factory=list)

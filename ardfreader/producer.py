@@ -7,14 +7,11 @@
 # @author: Santiago Nunez-Corrales <nunezco2@illinois.edu>
 
 from abc import ABC, abstractmethod
-from .pixel import Pixel
+from ardfreader.pixel import Pixel
 
 class Producer(ABC):
     
     def __init__(self, inputfile):
-        """
-        Initialize the reader
-        """
         self.inputfile = inputfile
         self.current = 0
 

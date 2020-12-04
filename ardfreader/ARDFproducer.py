@@ -6,8 +6,8 @@
 #
 # @author: Santiago Nunez-Corrales <nunezco2@illinois.edu>
 
-from .producer import Producer
-from .pixel import Pixel
+from ardfreader.producer import Producer
+from ardfreader.pixel import Pixel
 
 
 class ARDFProducer(Producer):

@@ -16,7 +16,7 @@ setuptools.setup(
     author_email='nunezco2@illinois.edu',
     packages=['ardfreader'],
     license='LICENSE.txt',
-    description='An ARDF reader package.',
+    description='An ARDF reader for fast force mapping AFM data.',
     long_description=open('README.md').read(),
     python_requires='>3.6',
     install_requires=[

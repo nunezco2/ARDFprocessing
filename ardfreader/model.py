@@ -7,17 +7,19 @@
 # @author: Santiago Nunez-Corrales <nunezco2@illinois.edu>
 
 from abc import ABC, abstractmethod
+from ardfreader.pixel import Pixel
+from ardfreader.curve import Curve
 
 
 class Model(ABC):
 
-    @abstractmethod
     def __init__(self, name, params):
         self.__name = name
+        self.__params = params
 
     @abstractmethod
-    def fit(self):
+    def fit(self, pix: Pixel) -> Curve:
         pass
-
+    
     def name(self):
         return self.__name

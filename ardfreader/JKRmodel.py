@@ -6,10 +6,11 @@
 #
 # @author: Santiago Nunez-Corrales <nunezco2@illinois.edu>
 
-from dataclasses import dataclass, field
+from ardfreader.curve import Curve
+from ardfreader.model import Model
 
-@dataclass
-class Pixel:
-    x: int = 0
-    y: int = 0
-    channel: list = field(default_factory=list)
+
+class JRKModel(Model):
+
+    def fit(self, pix: Curve):
+        pass
