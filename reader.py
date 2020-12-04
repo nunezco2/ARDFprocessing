@@ -11,6 +11,7 @@ import logging
 import argparse
 import multiprocessing as mp
 
+from ardfreader.ARDFproducer import ARDFProducer
 
 def init_parser():
     """
@@ -60,7 +61,12 @@ def start(args):
     if not(check_cores(args.cores) and 
             check_files(args.inputfile, args.outputdb) and 
             check_algo(args.algorithm)):
-        sys,exit('Exiting after error')    
+        sys.exit('Exiting after error')
+
+    # Parse the first part of the file to make sure it is an ARDF
+    producer = ARDFProducer(args.inputfile)
+    producer.parse()
+
 
 
 if __name__ == '__main__':

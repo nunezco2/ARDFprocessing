@@ -7,21 +7,21 @@
 # @author: Santiago Nunez-Corrales <nunezco2@illinois.edu>
 
 from abc import ABC, abstractmethod
-
+from .pixel import Pixel
 
 class Producer(ABC):
     
-    @abstractmethod
     def __init__(self, inputfile):
         """
         Initialize the reader
         """
-        self.__inputfile = inputfile
+        self.inputfile = inputfile
+        self.current = 0
 
     @abstractmethod
-    def parse():
+    def parse(self) -> None:
         pass
 
     @abstractmethod
-    def next():
+    def next(self) -> Pixel:
         pass
