@@ -23,7 +23,7 @@ def init_parser():
     A function that sets up the main parser for the file reader
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("--i", action="store",default="temp.ardf",
+    parser.add_argument("--i", action="store",default="Dis0007.ardf",
                         dest="inputfile", help="Input ARDF file")
     parser.add_argument("--o", action="store",default="out.db",
                         dest="outputdb", help="Output SQLite file")
