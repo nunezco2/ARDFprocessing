@@ -6,13 +6,11 @@
 #
 # @author: Santiago Nunez-Corrales <nunezco2@illinois.edu>
 
-from dataclasses import dataclass, field
-
-@dataclass
 class Pixel:
-    x: int = 0
-    y: int = 0
-    channel: list = field(default_factory=list)
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.channels = {}
 
-    def is_eof(self):
-        not self.list
+    def add_channel(self, i, chn):
+        self.channels[i] = chn

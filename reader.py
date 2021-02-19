@@ -9,7 +9,11 @@
 import sys
 import logging
 import argparse
+import numpy as np
+import pandas as pd
 import multiprocessing as mp
+import matplotlib.pyplot as plt
+
 
 from ardfreader.JKRmodel import JKRModel
 from ardfreader.ARDFproducer import ARDFProducer
@@ -31,6 +35,8 @@ def init_parser():
                         dest="cores", help="Number of cores")
     parser.add_argument("--algo", action="store",default="JKR",
                         dest="algorithm", help="Pixel processing algorithm")
+    parser.add_argument("--verbose", help="increase output verbosity",
+                        action="store_true", dest="verbose")
     return parser
 
 
@@ -85,7 +91,7 @@ def start(args):
         model = algo(args.algorithm, params)
 
     # Parse the first part of the file to make sure it is an ARDF
-    producer = ARDFProducer(args.inputfile)
+    producer = ARDFProducer(args.inputfile, verbose=args.verbose)
     producer.parse()
 
     # Initialize the database to save the data
@@ -96,10 +102,27 @@ def start(args):
     consumer.start()
 
     # While no EOF is read, put it and process it in the queue
-    for p in producer:
-        consumer.put(FittingTask(p, model))
+    #for p in producer:
+    #    consumer.put(FittingTask(p, model))
 
-    # Stop the consumer after
+    pix = producer.__next__()
+
+    n = len(pix.channels[1])
+
+    x = np.linspace(0, 1.0, num=n, endpoint=False)
+
+    mx = np.max(pix.channels[1])
+
+    print(mx)
+
+    y = pix.channels[1]
+
+    yy = np.where(y < 1e8, y, 0)
+
+    plt.plot(x,yy)
+    plt.show()
+
+    # Stop the consumer aftera
     consumer.stop()
 
     # Close the database
