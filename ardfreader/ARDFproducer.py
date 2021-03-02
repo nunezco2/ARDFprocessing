@@ -34,6 +34,7 @@ class ARDFProducer(Producer):
         self.afm_params = dict()
         self.scan_params = dict()
         self.verbose = verbose
+        self.first_seen = None
     
     def parse(self):
         print(f'Currently parsing {self.inputfile}...')
@@ -126,17 +127,14 @@ class ARDFProducer(Producer):
                 needs_value = False
                 # Empty the keyword queue
                 self.value = []
-                print(f'{keyword}: {value}')
             # Case 5: we find a carriage return but no value is needed
             elif self.is_cr(curr) and not needs_value:
                 # Possible cases:
                 # 1. the last character was not a cr, then discard current keyword and maintain in not needs value
                 # 2. the last character was a cr also, then continue
                 if not self.is_cr(last):
-                    print(f"Instruction section found: {b''.join(self.keyword).decode('ascii')}")
                     self.keyword = []
                 else:
-                    print('Seen a cr and cr')
                     continue
             elif self.is_space(curr) or self.is_null(curr):
                 continue
@@ -255,7 +253,18 @@ class ARDFProducer(Producer):
                 [measurement] =  struct.unpack('f', self.handler.read(4))
                 data.append(measurement)
 
-            pix.add_channel(i, np.array(data))
+            data = np.array(data)[0:5571]
+
+            # Clean the data before storing it
+            if i == 0 or i == 2:
+                clean_data = np.where(data > 1e-8, data, 0)
+                clean_data = np.where(clean_data < 1e-5, clean_data, 0)
+            elif i == 1:
+                clean_data = np.where(data < 1e8, data, 0)
+            else:
+                clean_data = data
+
+            pix.add_channel(i, np.array(clean_data))
 
         return pix
         

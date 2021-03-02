@@ -17,7 +17,7 @@ class Consumer:
         self.tasks = JoinableQueue()
         self.num_fitters = cpu_count()
         self.fitters = [ Fitter(self.tasks, db) for i in range(self.num_fitters) ]
-        print(f'Initializing {self.num_fitters} fitting processes')
+        print(f'Initializing {self.num_fitters} fitting processes\n')
 
     def start(self):
         for f in self.fitters:

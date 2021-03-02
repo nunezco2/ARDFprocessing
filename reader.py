@@ -98,32 +98,21 @@ def start(args):
     db = ARDFDatabase(args.outputdb)
 
     # Create and start the consumer using the information about the algorithm, the parameters and the database
-    consumer = Consumer(db)
-    consumer.start()
+    #consumer = Consumer(db)
+    #consumer.start()
+
+    db.connect()
 
     # While no EOF is read, put it and process it in the queue
     #for p in producer:
     #    consumer.put(FittingTask(p, model))
 
-    pix = producer.__next__()
-
-    n = len(pix.channels[1])
-
-    x = np.linspace(0, 1.0, num=n, endpoint=False)
-
-    mx = np.max(pix.channels[1])
-
-    print(mx)
-
-    y = pix.channels[1]
-
-    yy = np.where(y < 1e8, y, 0)
-
-    plt.plot(x,yy)
-    plt.show()
+    for i in range(0,100):
+        pix = producer.__next__()
+        db.put_pixel(pix)
 
     # Stop the consumer aftera
-    consumer.stop()
+    #consumer.stop()
 
     # Close the database
     db.close()
