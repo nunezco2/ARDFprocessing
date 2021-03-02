@@ -57,8 +57,9 @@ class ARDFDatabase:
 
             self.cursor.execute(f'INSERT INTO Pixels VALUES ({x}, {y}, {i}, {ch1}, {ch2}, {ch3})')
 
+        self.conn.commit()
+
     def close(self):
         if self.cursor:
             print(f'Database {self.file} closing...\n')
-            self.conn.commit()
             self.conn.close()
